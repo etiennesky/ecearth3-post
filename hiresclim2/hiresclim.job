@@ -1,0 +1,104 @@
+#!/bin/ksh
+#PBS -N hiresclim_t010
+#PBS -q nf
+#PBS -l EC_billing_account=spnltune
+#PBS -l EC_total_tasks=1
+#PBS -l EC_threads_per_task=12
+#PBS -l EC_memory_per_task=24GB
+#PBS -l EC_hyperthreads=1
+#PBS -l walltime=03:00:00
+#PBS -j oe
+#PBS -e /scratch/ms/it/ccjh/log/hiresclim_t010.err
+#PBS -o /scratch/ms/it/ccjh/log/hiresclim_t010.out
+#PBS -S /bin/bash
+
+set -uex
+cd $PBS_O_WORKDIR
+echo EC_Nodes $EC_nodes 
+echo EC_total_tasks $EC_total_tasks
+echo EC_threads_per_task $EC_threads_per_task
+echo EC_tasks_per_node $EC_tasks_per_node
+echo EC_hyperthreads $EC_hyperthreads
+echo EC_threads_per_numa_node $EC_threads_per_numa_node
+
+##########################
+
+# Wrapper of postprocessing utility 
+# Requires: 	1) CDO with netcdf4 for IFS postprocessing
+#		2) rebuildndemo and cdftools for NEMO postprocessing	
+#		3) python for relative humidity
+#		4) nco for supplementary NEMO diags
+
+# Produces IFS postprocessing on monthly, daily and 6hrs basis
+# together with  monthly averages for NEMO
+
+##########################
+#----user defined var----#
+##########################
+
+expname=cse5
+YEAR1=1990
+YEAR2=1993
+
+#set prog dir and parallel procs for batch scheduling
+PROGDIR=/perm/ms/it/ccjh/ecearth3/post/hiresclim2
+IFS_NPROCS=12
+NEMO_NPROCS=12
+
+#special module load for ECMWF cca
+module switch PrgEnv-cray PrgEnv-intel
+module load nco netcdf python cdo cdftools
+
+#########################
+
+# Flags: 0 is false, 1 is true
+# monthly flag for standard hiresclim
+# daily and 6hrs flag for u,v,t,z 3d field + tas,totp extraction
+ifs_monthly=1
+ifs_daily=0
+ifs_6hrs=0
+
+# extract NEMO standard and NEMO extra-fields; extra-fields require NCO
+nemo=0
+nemo_extra=0
+
+# build 3D relative humidity; require python
+rh_build=1
+
+#store monthly results in a second folder
+store=0
+
+######################################
+#-----here start the computations----#
+######################################
+for (( year=$YEAR1; year<=$YEAR2; year++ )); do
+
+	if [ $ifs_monthly == 1 ] ; then	
+	. $PROGDIR/script/ifs_monthly.sh $expname $year
+	fi
+
+	if [ $ifs_daily == 1 ] ; then
+	. $PROGDIR/script/ifs_daily.sh $expname $year
+	fi
+
+	if [ $ifs_6hrs == 1 ] ; then
+        . $PROGDIR/script/ifs_6hrs.sh $expname $year
+        fi
+
+	if [ $nemo == 1 ] ; then
+	. $PROGDIR/script/nemo_post.sh $expname $year $nemo_extra
+	fi
+
+	if [ $rh_build == 1 ] ; then
+	. $PROGDIR/script/config.sh
+	$python $PROGDIR/rhbuild/build_RH_new.py $expname $year
+	fi
+
+done
+
+#copy monthlydata
+if [ $store == 1 ] ; then
+cp -r --update $OUTDIR0/mon/ ${STOREDIR}/
+fi
+
+exit 0
