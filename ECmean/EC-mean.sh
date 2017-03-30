@@ -62,5 +62,9 @@ rm -r -f ecmean_$exp.tar
 rm -r -f ecmean_$exp.tar.gz
 tar cvf ecmean_$exp.tar $exp
 gzip ecmean_$exp.tar
-ectrans -remote sansone -source ecmean_$exp.tar.gz  -verbose -overwrite
-ectrans -remote sansone -source ~/EXPERIMENTS.$MACHINE.$USERme.dat -verbose -overwrite
+
+if $do_trans; then
+    ectrans -remote sansone -source ecmean_$exp.tar.gz  -verbose -overwrite
+    ectrans -remote sansone -source ~/EXPERIMENTS.$MACHINE.$USERme.dat -verbose -overwrite
+fi
+

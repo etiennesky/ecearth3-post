@@ -27,7 +27,7 @@ year1=$2
 year2=$3
 
 #set config.sh to configure folders and cdo details
-. ../config.sh
+. $CONFDIR/conf_ecmean_$MACHINE.sh
 
 # Where the PI climatologies are located
 PICLIM=$PIDIR/Climate_netcdf
@@ -77,6 +77,9 @@ $cdonc cat -$remap,$REFGRID ${FBASE}_u.nc $CLIMDIR/U_mon_2x2.nc
 $cdonc cat -$remap,$REFGRID ${FBASE}_v.nc $CLIMDIR/V_mon_2x2.nc
 $cdonc cat -$remap,$REFGRID ${FBASE}_q.nc $CLIMDIR/Q_mon_2x2.nc
 
+# ET HERE fix nemo hiresclim first!
+if $do_ocean ; then
+    
 # NEMO fields: we reconstruct the mask from the salinity field
 OCEMASK=$CLIMDIR/tmask.nc
 $cdonc seltimestep,1 -gtc,0 ${FBASE}_sosaline.nc  $OCEMASK
@@ -87,10 +90,19 @@ $cdonc cat -invertlat -remapbil,$OCEREFGRID -ifthen $OCEMASK ${FBASE}_sosaline.n
 $cdonc cat -invertlat -remapbil,$OCEREFGRID -ifthen $OCEMASK -selname,iiceconc ${FBASE}_ice.nc $CLIMDIR/SICE_mon_2x2.nc
 rm $OCEMASK
 
+fi
+
 done
 
 #time mean for all fields
-for vv in t2m msl qnet tp ewss nsss T U V Q SST SSS SICE ; do
+
+#for vv in t2m msl qnet tp ewss nsss T U V Q SST SSS SICE ; do
+if $do_ocean ; then
+    vvars="t2m msl qnet tp ewss nsss T U V Q SST SSS SICE"
+else
+    vvars="t2m msl qnet tp ewss nsss T U V Q"
+fi
+for vv in ${vvars} ; do
         $cdonc timmean $CLIMDIR/${vv}_mon_2x2.nc $CLIMDIR/${vv}_mean_2x2.nc
 done
 

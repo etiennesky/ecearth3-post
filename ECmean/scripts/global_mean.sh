@@ -20,7 +20,7 @@ year1=$2
 year2=$3
 
 #set config.sh to configure folders and cdo details
-. ../config.sh
+. $CONFDIR/conf_ecmean_$MACHINE.sh
 
 ############################################
 # No need to touch below this line/
@@ -31,7 +31,14 @@ nyears=$((year2-year1))
 
 #Preprocessing of atmospheric and oceanic variables
 #atmospheric variables to be analyzed
-varlist1="tsr ttr ssr ssrd str strd sshf slhf ssrc strc tas tcc lcc mcc hcc msl totp e tsrc ttrc ssrc strc ro sf tcwv tciw tclw heatc"
+#varlist1="tsr ttr ssr ssrd str strd sshf slhf ssrc strc tas tcc lcc mcc hcc msl totp e tsrc ttrc ssrc strc ro sf tcwv tciw tclw heatc"
+if $do_ocean ; then
+    varlist1="tsr ttr ssr ssrd str strd sshf slhf ssrc strc tas tcc lcc mcc hcc msl totp e tsrc ttrc ssrc strc ro sf tcwv tciw tclw heatc"
+else
+    #PLS problem with sf (not available from hires-clim??). 'heatc' from nemo.
+    varlist1="tsr ttr ssr ssrd str strd sshf slhf ssrc strc tas tcc lcc mcc hcc msl totp e tsrc ttrc ssrc strc ro sf tcwv tciw tclw"
+    #varlist1="tsr ttr ssr ssrd str strd sshf slhf ssrc strc tas tcc lcc mcc hcc msl totp e tsrc ttrc ssrc strc tcwv tciw tclw"
+fi
 cdoformat="%9.4f,1"
 
 for vv in ${varlist1}; do
@@ -64,30 +71,34 @@ rm $TMPDIR/full_field.nc
 
 done
 
-#ocean variables to be analzyed
-varlist2="sosstsst sossheig sosaline sowaflup"
+if $do_ocean ; then
 
-for vv in ${varlist2}; do
+    #ocean variables to be analzyed
+    varlist2="sosstsst sossheig sosaline sowaflup"
 
-rm -f  $TMPDIR/${exp}_${vv}_singlefile.nc
+    for vv in ${varlist2}; do
+
+        rm -f  $TMPDIR/${exp}_${vv}_singlefile.nc
 
         for (( year=$year1; year<=$year2; year++)); do
-        indir=$(eval echo $DATADIR)
-        $cdonc cat $indir/${exp}_${year}_${vv}_mean.nc $TMPDIR/full_field.nc
+            indir=$(eval echo $DATADIR)
+            $cdonc cat $indir/${exp}_${year}_${vv}_mean.nc $TMPDIR/full_field.nc
         done
 
-$cdo selvar,mean_${vv} $TMPDIR/full_field.nc $TMPDIR/varfile.nc
-$cdo timmean $TMPDIR/varfile.nc  $TMPDIR/mean_${vv}.nc
+        $cdo selvar,mean_${vv} $TMPDIR/full_field.nc $TMPDIR/varfile.nc
+        $cdo timmean $TMPDIR/varfile.nc  $TMPDIR/mean_${vv}.nc
 
-rm $TMPDIR/full_field.nc $TMPDIR/varfile.nc
+        rm $TMPDIR/full_field.nc $TMPDIR/varfile.nc
 
-done
+    done
 
-#delta ssh
-year=$year1;  indir=$(eval echo $DATADIR)
-$cdo timmean $indir/${exp}_${year1}_sossheig_mean.nc $TMPDIR/first.nc
-year=$year2;  indir=$(eval echo $DATADIR)
-$cdo timmean $indir/${exp}_${year2}_sossheig_mean.nc $TMPDIR/last.nc
+    #delta ssh
+    year=$year1;  indir=$(eval echo $DATADIR)
+    $cdo timmean $indir/${exp}_${year1}_sossheig_mean.nc $TMPDIR/first.nc
+    year=$year2;  indir=$(eval echo $DATADIR)
+    $cdo timmean $indir/${exp}_${year2}_sossheig_mean.nc $TMPDIR/last.nc
+
+fi
 
 #creating a mask
 $cdonc -R selcode,172 $maskfile $TMPDIR/temp_mask.nc
@@ -124,8 +135,10 @@ net_surface_ocean=$( $cdo outputf,$cdoformat -add mean_ssr_ocean.nc -add  mean_s
 net_surface_land=$( $cdo outputf,$cdoformat -add mean_ssr_land.nc -add  mean_str_land.nc -add  mean_sshf_land.nc -sub  mean_slhf_land.nc mean_sf_land.nc )
 
 #estimated flux to the ocean from heat content
-$cdo sub -selyear,$year2 $TMPDIR/timeseries_heatc.nc -selyear,$year1  $TMPDIR/timeseries_heatc.nc  $TMPDIR/delta_heatc.nc 
-ocean_flux=$( $cdo outputf,$cdoformat -divc,86400 -divc,365.25 -divc,$nyears -divc,361 -divc,1e12 $TMPDIR/delta_heatc.nc )
+if $do_ocean ; then
+    $cdo sub -selyear,$year2 $TMPDIR/timeseries_heatc.nc -selyear,$year1  $TMPDIR/timeseries_heatc.nc  $TMPDIR/delta_heatc.nc 
+    ocean_flux=$( $cdo outputf,$cdoformat -divc,86400 -divc,365.25 -divc,$nyears -divc,361 -divc,1e12 $TMPDIR/delta_heatc.nc )
+fi
 
 #radiative variables
 net_TOA=$( $cdo outputf,$cdoformat -add mean_tsr.nc mean_ttr.nc )
@@ -146,7 +159,11 @@ corrected_net_surface=$( echo " " $( echo $net_surface - $Snow_LH | bc | awk '{p
 corrected_TOA_SFC=$( echo " " $( echo $net_TOA - $net_surface + $Snow_LH | bc | awk '{printf "%9.4f", $0}' ) )
 
 #Writing variables to file: part on radiation
-varlist="tsr ttr net_TOA ssr str sshf slhf SW_cloud_forcing LW_cloud_forcing net_surface corrected_net_surface TOA_SFC corrected_TOA_SFC Snow_LH Snow_LH_ocean Snow_LH_land net_surface_ocean net_surface_land  ocean_flux" 
+if $do_ocean ; then
+    varlist="tsr ttr net_TOA ssr str sshf slhf SW_cloud_forcing LW_cloud_forcing net_surface corrected_net_surface TOA_SFC corrected_TOA_SFC Snow_LH Snow_LH_ocean Snow_LH_land net_surface_ocean net_surface_land ocean_flux" 
+else
+    varlist="tsr ttr net_TOA ssr str sshf slhf SW_cloud_forcing LW_cloud_forcing net_surface corrected_net_surface TOA_SFC corrected_TOA_SFC Snow_LH Snow_LH_ocean Snow_LH_land net_surface_ocean net_surface_land " 
+fi
 
 echo -e "${exp} ${year1} ${year2}" > ${OUTDIR}/Global_Mean_Table_${exp}_${year1}_$year2.txt
 echo -e "Radiation" >> ${OUTDIR}/Global_Mean_Table_${exp}_${year1}_$year2.txt
@@ -230,13 +247,13 @@ case ${vv} in
 	"ro")           varname="Runoff         ";    		units="10^6 kg/s ";      expval=`$cdo output mean_${vv}.nc`;;
 	"peland")       varname="P-E (land)     ";      	units="10^6 kg/s ";      expval=`$cdo output mean_peland.nc`;;
 	"peocean")      varname="P-E (ocean)    ";     		units="10^6 kg/s ";      expval=`$cdo output mean_peocean.nc`;;
-	"seatrend")     varname="Sea Exp. Trend ";     		units="m/100y    ";      expval=`$cdo output -mulc,0.0087 -add mean_peocean.nc mean_ro.nc`;;
-	"seatrend2")    varname="Sea Real Trend ";     		units="m/100y    ";      expval=`$cdo output -selvar,mean_sossheig -divc,$nyears -mulc,100 -sub last.nc first.nc `;;
-	"sosstsst")     varname="SST            ";      	units="°C        "; 	expval=`$cdo output mean_${vv}.nc`;
-											eraval=18.4147 ; datas="HadISST(1990-2010)";;
-	"sosaline")     varname="SSS            ";         	units="psu       ";	expval=`$cdo output mean_${vv}.nc`;;
-	"sossheig")     varname="SSH            ";         	units="m         ";	expval=`$cdo output mean_${vv}.nc`;;
-	"sowaflup")     varname="Nemo Water Flux";       	units="m/100y    ";	expval=`$cdo output -mulc,-0.0087 -mulc,361 -mulc,1e6 mean_${vv}.nc`;;
+	"seatrend")     varname="Sea Exp. Trend ";     		units="m/100y    ";      $do_ocean && expval=`$cdo output -mulc,0.0087 -add mean_peocean.nc mean_ro.nc`;;
+	"seatrend2")    varname="Sea Real Trend ";     		units="m/100y    ";      $do_ocean && expval=`$cdo output -selvar,mean_sossheig -divc,$nyears -mulc,100 -sub last.nc first.nc `;;
+	"sosstsst")     varname="SST            ";      	units="°C        "; 	$do_ocean && expval=`$cdo output mean_${vv}.nc`;
+											$do_ocean && eraval=18.4147 ; datas="HadISST(1990-2010)";;
+	"sosaline")     varname="SSS            ";         	units="psu       ";	$do_ocean && expval=`$cdo output mean_${vv}.nc`;;
+	"sossheig")     varname="SSH            ";         	units="m         ";	$do_ocean && expval=`$cdo output mean_${vv}.nc`;;
+	"sowaflup")     varname="Nemo Water Flux";       	units="m/100y    ";	$do_ocean && expval=`$cdo output -mulc,-0.0087 -mulc,361 -mulc,1e6 mean_${vv}.nc`;;
 
 esac
 

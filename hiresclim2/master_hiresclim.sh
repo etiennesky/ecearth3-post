@@ -1,4 +1,4 @@
-#!/bin/ksh
+#!/bin/bash
 
 # Wrapper of postprocessing utility 
 # Requires: 	1) CDO with netcdf4 for IFS postprocessing
@@ -9,6 +9,7 @@
 # Produces IFS postprocessing on monthly, daily and 6hrs basis
 # together with  monthly averages for NEMO
 
+set -xuve 
 
 ##########################
 #----user defined var----#
@@ -37,7 +38,8 @@ STOREDIR=$OUTDIR0
 # Flags: 0 is false, 1 is true
 # monthly flag for standard hiresclim
 # daily and 6hrs flag for u,v,t,z 3d field + tas,totp extraction
-ifs_monthly=1
+ifs_monthly=0
+ifs_monthly_mmo=1
 ifs_daily=0
 ifs_6hrs=0
 
@@ -60,26 +62,32 @@ cd $PROGDIR/script
 #-----here start the computations----#
 ######################################
 for (( year=$YEAR1; year<=$YEAR2; year++ )); do
-
+  echo "Postprocessing $expname for $year"
   start1=$(date +%s)
-	if [ $ifs_monthly == 1 ] ; then	
-	. ./ifs_monthly.sh $expname $year
+	if [ $ifs_monthly == 1 ] ; then
+	. ./ifs_monthly.sh $expname $year $CONFDIR/conf_hiresclim_$MACHINE.sh
+	fi
+
+	if [ $ifs_monthly_mmo == 1 ] ; then
+	. ./ifs_monthly_mmo.sh $expname $year $CONFDIR/conf_hiresclim_$MACHINE.sh
 	fi
 
 	if [ $ifs_daily == 1 ] ; then
-	. ./ifs_daily.sh $expname $year
+	. ./ifs_daily.sh $expname $year $CONFDIR/conf_hiresclim_$MACHINE.sh
 	fi
 
 	if [ $ifs_6hrs == 1 ] ; then
-        . ./ifs_6hrs.sh $expname $year
+        . ./ifs_6hrs.sh $expname $year $CONFDIR/conf_hiresclim_$MACHINE.sh
         fi
 
 	if [ $nemo == 1 ] ; then
 	. ./nemo_post.sh $expname $year $nemo_extra
 	fi
 
+        # TODO ET use code from prepare_emop.sh for computation of RH
+        
 	if [ $rh_build == 1 ] ; then
-	. ../config.sh
+	. $CONFDIR/conf_hiresclim_$MACHINE.sh
 	$python ../rhbuild/build_RH_new.py $expname $year
 	fi
 
@@ -93,7 +101,7 @@ for (( year=$YEAR1; year<=$YEAR2; year++ )); do
                 mkdir -p $STOREDIR
                 echo "$expname for $year has been postprocessed successfully" > $STOREDIR/postcheck_${expname}_${year}.txt
                 echo "Postprocessing lasted for $runtime sec (or $hh hrs)" >> $STOREDIR/postcheck_${expname}_${year}.txt
-                echo "Configuration: MON: $ifs_monthly ; DAY: $ifs_daily ; 6HRS: $ifs_6hrs; CDX: $ifs_3hrs_cdx ; SMON: $ifs_smon ; NONLIN: $ifs_nonlinear"  >> $STOREDIR/postcheck_${expname}_${year}.txt
+                echo "Configuration: MON: $ifs_monthly ; DAY: $ifs_daily ; 6HRS: $ifs_6hrs"  >> $STOREDIR/postcheck_${expname}_${year}.txt
                 echo $(date) >> $STOREDIR/postcheck_${expname}_${year}.txt
 
   fi

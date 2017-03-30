@@ -1,0 +1,20 @@
+#!/bin/bash
+#SBATCH -J hc_<EXPID>
+#SBATCH -n <NPROCS>
+#SBATCH -t 12:00:00
+#SBATCH -o <LOG>/hc_<EXPID>_%J.out
+#SBATCH -e <LOG>/hc_<EXPID>_%J.err
+
+set -ex
+
+cd $SLURM_SUBMIT_DIR
+
+export NEMO_NPROCS=<NPROCS>
+export IFS_NPROCS=<NPROCS>
+
+. $HOME/ecearth3/post/conf/conf_users.sh
+
+#########################
+cd $SCRIPTDIR
+
+../hiresclim2/master_hiresclim.sh <EXPID> <Y1> <Y2> <USERexp>

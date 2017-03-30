@@ -27,7 +27,7 @@ year1=$2
 year2=$3
 
 #set config.sh to configure folders and cdo details
-. ../config.sh
+. $CONFDIR/conf_ecmean_$MACHINE.sh
 
 #dir definition: CLIMDIR e TMPDIR defined by config.sh
 OBSDIR=$PIDIR/Climate_netcdf
@@ -36,7 +36,11 @@ mkdir -p $TMPDIR
 
 pilong=(1 2 3 4 5 6 7 8 9 10 11 12 13); ii=0
 
-var2d="t2m msl qnet tp ewss nsss SST SSS SICE"
+if $do_ocean ; then
+    var2d="t2m msl qnet tp ewss nsss SST SSS SICE"
+else
+    var2d="t2m msl qnet tp ewss nsss"
+fi
 var3d="T U V Q"
 
 rm -f $outfile

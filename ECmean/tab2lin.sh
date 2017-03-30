@@ -7,7 +7,8 @@ sed -n "${row},${row}p" $f | cut -f 3
 }
 function getcell2 {
 f=$1
-row=$(( $2 + 26  ))
+#row=$(( $2 + 26  ))
+row=$(( $2 + 25  ))
 sed -n "${row},${row}p" $f | cut -f 3
 }
 
@@ -16,6 +17,7 @@ y1=$2
 y2=$3
 echo -n $exp "|"
 f=$exp/Global_Mean_Table_${exp}_${y1}_${y2}.txt
+echo "TOAnet SW | TOAnet LW | Net TOA | Sfc Net SW | Sfc Net LW | SH Fl. | LH Fl. | SWCF | LWCF | NetSfc* | TOA-SFC | t2m | TCC | LCC | MCC | HCC | TP | P-E"
 
 for row in 1 2 3 4 5 6 7 8 9 11 13
 do

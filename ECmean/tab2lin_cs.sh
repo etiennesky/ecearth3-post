@@ -7,7 +7,8 @@ sed -n "${row},${row}p" $f | cut -f 3
 }
 function getcell2 {
 f=$1
-row=$(( $2 + 26  ))
+#row=$(( $2 + 26  ))
+row=$(( $2 + 25  ))
 sed -n "${row},${row}p" $f | cut -f 3
 }
 
