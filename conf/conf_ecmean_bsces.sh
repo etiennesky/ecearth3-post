@@ -47,7 +47,8 @@ remap="remapcon2"
 #and by ./post2x2.sh scripts. They are computed from the original initial conditions of IFS (using var 172)
 #maskfile=/lus/snx11062/scratch/ms/it/${USER}/ecearth3/setup/ifs/T255L91/19900101/ICMGGECE3INIT
 # ET HERE add test for resolution
-maskfile=/esnas/scratch/etourign/ecearth3-post/data/ifs/T511L91/19900101/ICMGGECE3INIT
+#maskfile=/esnas/scratch/etourign/ecearth3-post/data/ifs/T511L91/19900101/ICMGGECE3INIT
+maskfile=/esnas/scratch/etourign/ecearth3-post/data/ifs/T255L91/19900101/ICMGGECE3INIT
 
 # ET HERE add this flag elsewhere
 # ET HERE fix nemo hiresclim first!

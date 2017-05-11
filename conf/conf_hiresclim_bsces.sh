@@ -4,9 +4,7 @@
 # add here machine dependent set up
 # It expects USER* variables defined in conf_users.sh
 
-#special module load for ECMWF cca
-#module switch PrgEnv-cray PrgEnv-intel
-#module load nco netcdf python cdo cdftools
+# load required modules
 module load NCO netCDF Python CDO CDFTOOLS
 
 ############################
@@ -66,7 +64,8 @@ mkdir -p $TMPDIR || exit -1
 
 #ET HERE fix this!!!
 export GRB_EXT=".grb"
-export PPTIME=10800
+export PPTIME=21600 #6h, default
+#export PPTIME=10800 #3h
 
 echo Script is running in $PROGDIR
 echo Temporary files are in $TMPDIR

@@ -41,7 +41,8 @@ out=$OUTDIR/${expname}_${year}
 #untar MMA* file
 # TODO get proper filename
 #cd $OUTDIR
-tar xvf $IFSRESULTS/MMA_${expname}_????????_fc*_${year}????-${year}????.tar
+#tar xvf $IFSRESULTS/MMA_${expname}_????????_fc*_${year}????-${year}????.tar
+for f in $IFSRESULTS/MMA_${expname}_????????_fc*_${year}????-${year}????.tar ; do tar xvf $f ; done
 for f in MMA_${expname}_??_${year}??.nc.gz ; do gunzip $f ; done
 
 # ICMSH
@@ -164,6 +165,9 @@ for v in ssr str sshf ssrd strd slhf tsr ttr ssrc strc tsrc ttrc ; do \
 for v in snr tnr ; do ncatted -a units,${v},c,c,'W m-2' ${out}_${v}.nc ; done
 for v in tclw tciw ; do ncatted -a units,${v},c,c,'kg m-2' ${out}_${v}.nc ; done
 for v in tcwv ; do ncatted -a units,${v},m,c,'kg m-2' ${out}_${v}.nc ; done
+
+# fix long_name
+for v in pme totp ; do ncatted -a long_name,${v},c,c,'Total precipitation' ${out}_${v}.nc ; done
 
 # change file suffices
 ( cd $OUTDIR ; for f in $(ls *.nc4); do mv $f ${f/.nc4/.nc}; done )
