@@ -8,9 +8,8 @@
 #SBATCH -o out_AMWGDIAG_%J.out
 #SBATCH -e err_AMWGDIAG_%J.out
 
-
-
 unset echo verbose
+#set echo verbose
 setenv DIAG_VERSION 120131  # version number YYMMDD
 
 
@@ -287,7 +286,7 @@ set set_9  = 0    # (0=ON,1=OFF)  DJF-JJA difference plots
 set set_10 = 0    # (0=ON,1=OFF)  annual cycle line plots    
 set set_11 = 0    # (0=ON,1=OFF)  miscellaneous plots
 set set_12 = 0    # (0=selected stations: 1=NONE, 2=ALL stations
-set set_13 = 1    # (0=ON,1=OFF)  ISCCP cloud simulator plots
+set set_13 = 0    # (0=ON,1=OFF)  ISCCP cloud simulator plots
 set set_14 = 0    # (0=ON,1=OFF)  Taylor diagram plots 
 set set_15 = 0    # (0=ON,1=OFF)  Annual Cycle Plots for Select stations
 

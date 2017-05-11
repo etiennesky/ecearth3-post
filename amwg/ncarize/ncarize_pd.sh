@@ -46,8 +46,11 @@
 
 
 # Getting list of available confs:
-list_confs=`\ls ../conf_*.bash | sed -e "s|../conf_||g" -e "s|.bash||g"`
+#list_confs=`\ls ../conf_*.bash | sed -e "s|../conf_||g" -e "s|.bash||g"`
+list_confs=`(cd $CONFDIR && \ls conf_amwg_* | sed -e "s|conf_amwg_||g" -e "s|.sh||g")`
+echo "configs: "$list_confs
 
+#set -xuve 
 
 usage()
 {
@@ -102,7 +105,8 @@ echo; echo
 
 
 
-fconfig="../conf_${MY_SETUP}.bash"
+#fconfig="../conf_${MY_SETUP}.bash"
+fconfig="$CONFDIR/conf_amwg_${MY_SETUP}.sh"
 if [ ! -f ${fconfig} ]; then echo " ERROR: no configuration file found: ${fconfig}"; exit; fi
 . ${fconfig}
 
@@ -130,7 +134,8 @@ echo " *** Will read EC-Earth post-processed netcdf files into"; echo "   ${POST
 export EMOP_CLIM_DIR=`echo ${EMOP_CLIM_DIR} | sed -e "s|<RUN>|${expname}|g"`
 
 echo; echo
-sleep 5
+
+#sleep 5
 
 
 
@@ -140,6 +145,7 @@ DIR_CL=${EMOP_CLIM_DIR}/clim_${expname}_${YEAR1}-${YEAR2}
 mkdir -p ${DIR_CL} ; rm -f ${DIR_CL}/*.tmp  ; rm -f ${DIR_CL}/*.nc
 
 LM="01 02 03 04 05 06 07 08 09 10 11 12"
+#LM="01"
 
 
 
@@ -213,8 +219,11 @@ for var in ${LIST_V_3D_ATM}; do
 
             for cm in ${LM}; do
                 
-                echo "ncks -h -a -F -O -d time,${cm} ${cf} -o tmp.nc"
-                ncks -h -a -F -O -d time,${cm} ${cf} -o tmp.nc
+#                echo "ncks -h -a -F -O -d time,${cm} ${cf} -o tmp.nc"
+#                ncks -h -a -F -O -d time,${cm} ${cf} -o tmp.nc
+# TMP ET need to save in netcdf3 format, because input files are in compressed netcdf4 format and this crashes ncks
+                echo "ncks -3 -h -a -F -O -d time,${cm} ${cf} -o tmp.nc"
+                ncks -3 -h -a -F -O -d time,${cm} ${cf} -o tmp.nc
                 # removing global attribute history:
                 echo "ncatted -h -O -a history,global,d,, tmp.nc"
                 ncatted -h -O -a history,global,d,, tmp.nc
@@ -263,7 +272,11 @@ done
 
 
 
-
+echo
+echo " LIST_V_2D_ATM:"
+echo ${LIST_V_2D_ATM}
+echo
+#exit
 
 
 # 2D atmospheric fields:
@@ -274,12 +287,12 @@ for var in ${LIST_V_2D_ATM}; do
     cd ${DIR_CL}/
 
     case ${var} in
+        "uas")  varncar="U_REF" ;;
+        "vas")  varncar="V_REF" ;;
         "sp")   varncar="PS" ;;
         "msl")  varncar="PSL" ;;
         "tas")  varncar="TREFHT" ;;
         "e")    varncar="QFLX" ;;
-        "uas")  varncar="U_REF" ;;
-        "vas")  varncar="V_REF" ;;
         "stl1") varncar="TS" ;;
         "tcc")  varncar="CLDTOT" ;;
         "totp") varncar="PRECT" ;;
@@ -335,7 +348,7 @@ for var in ${LIST_V_2D_ATM}; do
                 # Testing if no degenerate level dimension and variable of length 1:
                 ca=`ncdump -h tmp.nc | grep "${var}("`
                 for ctest in depth lev alt; do
-                    cb=`echo $ca | grep "${ctest}, lat"`
+                    cb=`echo $ca | grep "${ctest}, lat" || echo ""`
                     if [ ! "${cb}" = "" ]; then
                         echo "Need to remove degenerate dimension ${ctest} from ${var}"
                         ncwa -O -h    -a ${ctest} tmp.nc  -o tmp2.nc ; rm -f tmp.nc  ; # removes lev dimension
@@ -497,8 +510,9 @@ fi
 
 function var_is_there()
 {
-    ca=`ncdump -h ${expname}_01_climo.nc | grep "float ${1}("`
-    if [ "${ca}" = "" ]; then
+    ca1=`ncdump -h ${expname}_01_climo.nc | grep "float ${1}("`
+    ca2=`ncdump -h ${expname}_01_climo.nc | grep "double ${1}("`
+    if [ "${ca1}" = "" ] && [ "${ca2}" = "" ]; then
         echo "0"
     else
         echo "1"

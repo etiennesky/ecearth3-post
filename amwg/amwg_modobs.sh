@@ -1,4 +1,6 @@
-#!/bin/ksh
+#!/bin/bash
+
+#set -xuve
 
 if [ "$#" -lt 3 ]; then
    echo "Usage: amwg_modobs.sh exp year1 year2 [user] [resolution]"
@@ -27,8 +29,8 @@ year2=$3
 conf=$MACHINE
 PROGDIR=$EMOP_DIR
 
-cd $PROGDIR/ncarize
-bash $PROGDIR/ncarize/ncarize_pd.sh -C $conf -R $expname -g $resolution -i ${year1} -e ${year2}
+#cd $PROGDIR/ncarize
+#bash $PROGDIR/ncarize/ncarize_pd.sh -C $conf -R $expname -g $resolution -i ${year1} -e ${year2}
 cd $PROGDIR/amwg_diag
 bash $PROGDIR/amwg_diag/diag_mod_vs_obs.sh -C $conf -R $expname -P ${year1}-${year2}
 
@@ -36,5 +38,8 @@ DIAGS=$EMOP_CLIM_DIR/diag_${expname}_${year1}-${year2}
 cd $DIAGS
 rm -r -f diag_${expname}.tar
 tar cvf diag_${expname}.tar ${expname}-obs_${year1}-${year2}
+if $do_trans; then
 ectrans -remote sansone -source diag_${expname}.tar -verbose -overwrite
 ectrans -remote sansone -source ~/EXPERIMENTS.$MACHINE.$USERme.dat -verbose -overwrite
+fi
+
