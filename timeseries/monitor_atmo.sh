@@ -1,12 +1,12 @@
-#!/bin/ksh
+#!/bin/bash
 #set -ex
 export HERE=`pwd`
 
 export PYTHONPATH=${HERE}/scripts/barakuda_modules
 
 # Getting list of available confs:
-list_confs=`\ls conf_*.bash | sed -e "s|conf_||g" -e "s|.bash||g"`
-
+list_confs=`(cd $CONFDIR && \ls conf_timeseries_* | sed -e "s|conf_timeseries_||g" -e "s|.sh||g")`
+echo "configs: "$list_confs
 usage()
 {
     echo
@@ -52,8 +52,7 @@ done
 
 if [ "${MY_SETUP}" = "" -o "${RUN}" = "" ]; then usage ; fi
 
-
-fconfig="conf_${MY_SETUP}.bash"
+fconfig="$CONFDIR/conf_timeseries_${MY_SETUP}.sh"
 ls $fconfig
 if [ ! -f ${fconfig} ]; then echo " ERROR: no configuration file found: ${fconfig}"; exit; fi
 . $fconfig
