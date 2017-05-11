@@ -44,12 +44,12 @@ fi
 # remember to add -f flag to force
 
 # create a tar and prepare the copy
+if $do_trans; then
 #DIR_TIME_SERIES=/perm/ms/it/ccjh/ecearth3/diag/timeseries
 mkdir -p ${DIR_TIME_SERIES}
 cd ${DIR_TIME_SERIES}
 rm -r -f  timeseries_$exp.tar
 tar cfv timeseries_$exp.tar  $exp/
-if $do_trans; then
 ectrans -remote sansone -source timeseries_$exp.tar  -put -verbose -overwrite
 ectrans -remote sansone -source ~/EXPERIMENTS.$MACHINE.$USERme.dat -verbose -overwrite
 fi

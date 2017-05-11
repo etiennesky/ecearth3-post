@@ -14,12 +14,16 @@ PIDIR=/home/Earth/${USER0}/ecearth3/post/ECmean
 
 #Base directory where the postprocessing outputs are located
 #This will be evaluated later, use ${year} and ${exp} 
-DATADIR='/esnas/scratch/etourign/ecearth3-post/exp/${exp}/post/mon/Post_$year'
-#DATADIR='${SCRATCH}/ecearth3-post/exp/${exp}/post/mon/Post_$year'
+#DATADIR='/esnas/scratch/etourign/ecearth3-post/exp/${exp}/post/mon/Post_$year'
+DATADIR='/esarchive/exp/ecearth/${exp}/ecearth3-post/post/mon/Post_$year'
+
 
 #Where to save the table produced
-OUTDIR=/esnas/scratch/etourign/ecearth3-post/diag/table/${exp}
-#OUTDIR=${SCRATCH}/ecearth3-post/diag/table/${exp}
+#OUTDIR=/esnas/scratch/etourign/ecearth3-post/diag/table/${exp}
+OUTDIR=/esarchive/exp/ecearth/${exp}/ecearth3-post/diag/table
+#Where to store table of all experiments
+#we don't save to a common folder anymore, maybe they could go somewhere else
+OUTDIR2=/esarchive/exp/ecearth/${exp}/ecearth3-post/diag/table
 
 #Where to store the 2x2 climatologies
 #CLIMDIR=/esnas/scratch/etourign/ecearth3-post/exp/${exp}/post/model2x2_${year1}_${year2}

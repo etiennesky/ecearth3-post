@@ -40,17 +40,16 @@ export MESHDIR=/esnas/scratch/etourign/ecearth3-post/data/nemo/$NEMOCONFIG
 # where to find the results from the EC-EARTH experiment
 # On our machine Nemo and IFS results are in separate directories
 # ET HERE for now you need to make a symlink to the actual folder
-# e.g. ln -s /esarchive/exp/ecearth/a0ez/original_files/19500101/fc0/outputs/ /esnas/scratch/etourign/ecearth3-post/exp/a0ez
-#export BASERESULTS=${SCRATCH}/ecearth3-post/exp/$expname/outputs
-export BASERESULTS=/esnas/scratch/etourign/ecearth3-post/exp/$expname/outputs
-#export BASERESULTS=/esarchive/exp/ecearth/$expname/original_files/19500101/fc0/outputs/
+# e.g. mkdir -p /esarchive/exp/ecearth/a0ez/ecearth3-post && ln -s /esarchive/exp/ecearth/a0ez/original_files/19500101/fc0/outputs/ /esarchive/exp/ecearth/a0ez/ecearth3-post/outputs/
+#export BASERESULTS=/esnas/scratch/etourign/ecearth3-post/exp/$expname/outputs
+export BASERESULTS=/esarchive/exp/ecearth/$expname/ecearth3-post/outputs/
 
 # cdo table for conversion GRIB parameter --> variable name
 export ecearth_table=$PROGDIR/script/ecearth.tab
 
 # where to produce the results
-export OUTDIR0=/esnas/scratch/etourign/ecearth3-post/exp/$expname/post
 #export OUTDIR0=${SCRATCH}/ecearth3-post/exp/$expname/post
+export OUTDIR0=/esarchive/exp/ecearth/$expname/ecearth3-post/post
 mkdir -p $OUTDIR0
 
 #where to archive the monthly results (daily are kept in scratch)

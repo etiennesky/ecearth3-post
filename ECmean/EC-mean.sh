@@ -49,22 +49,22 @@ mv $TMPDIR/out.txt $OUTDIR/PI2_RK08_${exp}_${year1}_${year2}.txt
 #deleting the 2x2 climatology to save space
 rm $CLIMDIR/*.nc
 rmdir $CLIMDIR
-cd $OUTDIR/..
-touch globtable.txt globtable_cs.txt
-$PIDIR/tab2lin_cs.sh $exp $year1 $year2 >> ./globtable_cs.txt
-$PIDIR/tab2lin.sh $exp $year1 $year2 >> ./globtable.txt
+cd $OUTDIR
+touch $OUTDIR2/globtable.txt $OUTDIR2/globtable_cs.txt
+$PIDIR/tab2lin_cs.sh $exp $year1 $year2 >> $OUTDIR2/globtable_cs.txt
+$PIDIR/tab2lin.sh $exp $year1 $year2 >> $OUTDIR2/globtable.txt
 #finalizing
 cd -
 echo "table produced"
 
+
+if $do_trans; then
 cd $OUTDIR/..
-rm -r -f ecmean_$exp.tar 
+rm -r -f ecmean_$exp.tar
 rm -r -f ecmean_$exp.tar.gz
 tar cvf ecmean_$exp.tar $exp
 gzip ecmean_$exp.tar
-
-if $do_trans; then
-    ectrans -remote sansone -source ecmean_$exp.tar.gz  -verbose -overwrite
-    ectrans -remote sansone -source ~/EXPERIMENTS.$MACHINE.$USERme.dat -verbose -overwrite
+ectrans -remote sansone -source ecmean_$exp.tar.gz  -verbose -overwrite
+ectrans -remote sansone -source ~/EXPERIMENTS.$MACHINE.$USERme.dat -verbose -overwrite
 fi
 

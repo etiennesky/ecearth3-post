@@ -145,7 +145,8 @@ echo; echo " Runs to be treated: ${RUN}"; echo
 
 
 # where to create diagnostics:
-export DIAG_D=${DIR_TIME_SERIES}/${RUN}/atmosphere
+#export DIAG_D=${DIR_TIME_SERIES}/${RUN}/atmosphere
+export DIAG_D=${DIR_TIME_SERIES}/atmosphere
 
 
 if [ ${IFORCENEW} -eq 1 ]; then
