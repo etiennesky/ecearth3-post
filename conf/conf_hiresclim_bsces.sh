@@ -34,8 +34,9 @@ fi
 export NEMOCONFIG=ORCA025L75
 
 # where to find mesh and mask files 
-#ET HERE add nemo mesh masks
-export MESHDIR=/esnas/scratch/etourign/ecearth3-post/data/nemo/$NEMOCONFIG
+#ET HERE implement do_ocean
+#export MESHDIR=/esnas/scratch/etourign/ecearth3-post/data/nemo/$NEMOCONFIG
+export NEMO_MESH_DIR=/esnas/autosubmit/con_files/ecearth3-post/nemo/$NEMOCONFIG
 
 # where to find the results from the EC-EARTH experiment
 # On our machine Nemo and IFS results are in separate directories

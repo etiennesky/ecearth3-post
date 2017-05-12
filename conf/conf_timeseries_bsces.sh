@@ -41,7 +41,8 @@ export EMOP_CLIM_DIR="/esarchive/exp/ecearth/<RUN>/ecearth3-post/diag"
 #export NEMOCONFIG="ORCA1L46"
 export NEMOCONFIG=ORCA025L75
 
-export NEMO_MESH_DIR=/esnas/scratch/etourign/ecearth3-post/data/nemo/$NEMOCONFIG
+#export NEMO_MESH_DIR=/esnas/scratch/etourign/ecearth3-post/data/nemo/$NEMOCONFIG
+export NEMO_MESH_DIR=/esnas/autosubmit/con_files/ecearth3-post/nemo/$NEMOCONFIG
 
 
 # Where to store time-series produced by script

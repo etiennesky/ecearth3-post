@@ -37,11 +37,11 @@ if [ "$#" -eq 4 ]; then
 fi
 
 #OUT=$SCRATCH/ecearth3-post/tmp
-OUT=/esnas/scratch/etourign/ecearth3-post/tmp
+OUT=/esnas/scratch/$USER/ecearth3-post/tmp
 mkdir -p $OUT
 JOBFILE=$OUT/ecm-${1}.job
 
-LOG=/esnas/scratch/etourign/ecearth3-post/log
+LOG=/esnas/scratch/$USER/ecearth3-post/log
 mkdir -p $LOG
 
 echo "Launching EC-mean analysis for experiment $1 of user $USERexp"

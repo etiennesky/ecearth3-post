@@ -41,11 +41,11 @@ if [ "$#" -ge 4 ]; then
 fi
 
 #OUT=$SCRATCH/ecearth3-post/tmp
-OUT=/esnas/scratch/etourign/ecearth3-post/tmp
+OUT=/esnas/scratch/$USER/ecearth3-post/tmp
 mkdir -p $OUT
 JOBFILE=$OUT/hc-${1}.job
 
-LOG=/esnas/scratch/etourign/ecearth3-post/log
+LOG=/esnas/scratch/$USER/ecearth3-post/log
 mkdir -p $LOG
 
 NPROCS=3
