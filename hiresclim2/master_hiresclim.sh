@@ -39,7 +39,7 @@ STOREDIR=$OUTDIR0
 # monthly flag for standard hiresclim
 # daily and 6hrs flag for u,v,t,z 3d field + tas,totp extraction
 ifs_monthly=0
-ifs_monthly_mmo=1
+ifs_monthly_mma=1
 ifs_daily=0
 ifs_6hrs=0
 
@@ -68,8 +68,8 @@ for (( year=$YEAR1; year<=$YEAR2; year++ )); do
 	. ./ifs_monthly.sh $expname $year $CONFDIR/conf_hiresclim_$MACHINE.sh
 	fi
 
-	if [ $ifs_monthly_mmo == 1 ] ; then
-	. ./ifs_monthly_mmo.sh $expname $year $CONFDIR/conf_hiresclim_$MACHINE.sh
+	if [ $ifs_monthly_mma == 1 ] ; then
+	. ./ifs_monthly_mma.sh $expname $year $CONFDIR/conf_hiresclim_$MACHINE.sh
 	fi
 
 	if [ $ifs_daily == 1 ] ; then

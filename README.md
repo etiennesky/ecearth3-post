@@ -4,7 +4,7 @@ These scripts have been adapted from the scripts found on CCA at /perm/ms/it/ccj
 
 ecearth3-post consists of several independent tools:
 
-- hiresclim2 which creates monthly average files from IFS raw grib files or MMO files
+- hiresclim2 which creates monthly average files from IFS raw grib files or MMA files
 - ECmean which is used to compute several values such as energy budget and temperature, averaged over the globe and a given timeseries
 - timeseries which prepares BaraKuda-style timeseries plots of some atmospheric variables
 - AMWG, still unsupported
