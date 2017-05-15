@@ -15,6 +15,9 @@ export NEMO_NPROCS=3
 
 # name of host to run on (only for MACHINE=bsces), or set JOBHOST="" to let the queue manager choose
 # choose one of amdahl, moore, gustafson for the entire post-processing suite
-# since some temporary files are stored on the local $SCRATCH 
+# since some temporary files are stored on the local scratch folder
 #JOBHOST=""
 JOBHOST=gustafson
+
+#local scratch folder, please make sure this doesn't conflict with your setup
+export SCRATCH=/scratch/`id -gn`/${USER}
