@@ -34,6 +34,20 @@ fi
 
 cd $PIDIR/scripts/ 
 
+#stupidly guess which mask file to use, currently only T255 and T511 are supported
+mydir=$(year=$year1 && eval echo $DATADIR)
+FBASE=$mydir/${exp}_$year1
+griddes=`cdo -s griddes ${FBASE}_totp.nc`
+xsize=`echo "$griddes" | grep xsize | awk '{print $3}'`
+if [[ "$xsize" == "512" ]] ; then 
+    maskfile=$maskfile_t255
+elif [[ "$xsize" == "1024" ]] ; then 
+    maskfile=$maskfile_t511 ; 
+else 
+    echo `basename $0`": cannot determine IFS grid" ; exit 1 
+fi
+export maskfile
+
 #executing files
 mkdir -p $OUTDIR
 ./post2x2.sh $exp $year1 $year2

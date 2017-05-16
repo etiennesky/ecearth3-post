@@ -44,6 +44,8 @@ JOBFILE=$OUT/ecm-${1}.job
 LOG=/esnas/scratch/$USER/ecearth3-post/log
 mkdir -p $LOG
 
+NPROCS=1
+
 echo "Launching EC-mean analysis for experiment $1 of user $USERexp"
 
 sed "s/<EXPID>/$1/" < $SCRIPTDIR/header_bsces.tmpl > $JOBFILE
@@ -51,6 +53,7 @@ sed -i "s/<ACCOUNT>/$account/" $JOBFILE
 sed -i "s/<USERme>/$USERme/" $JOBFILE
 sed -i "s/<JOBID>/ecm/" $JOBFILE
 sed -i "s/<JOBHOST>/$JOBHOST/" $JOBFILE
+sed -i "s/<NPROCS>/$NPROCS/" $JOBFILE
 sed -i 's#<LOG>#'$LOG'#' $JOBFILE
 
 echo ../ECmean/EC-mean.sh $1 $2 $3 $USERexp >>  $JOBFILE

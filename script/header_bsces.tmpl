@@ -1,13 +1,16 @@
 #!/bin/bash
 #SBATCH -J <JOBID>_<EXPID>
-#SBATCH -n 1
-#SBATCH -t 03:00:00
+#SBATCH -n <NPROCS>
+#SBATCH -t 12:00:00
 #SBATCH -o <LOG>/<JOBID>_<EXPID>_%J.out
 #SBATCH -e <LOG>/<JOBID>_<EXPID>_%J.err
 
 set -ex
 
 cd $SLURM_SUBMIT_DIR
+
+export NEMO_NPROCS=<NPROCS>
+export IFS_NPROCS=<NPROCS>
 
 . $HOME/ecearth3/post/conf/conf_users.sh
 

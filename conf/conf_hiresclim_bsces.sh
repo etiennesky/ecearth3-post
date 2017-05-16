@@ -62,10 +62,12 @@ mkdir -p $OUTDIR0
 export TMPDIR=${SCRATCH}/ecearth3-post/tmp/post_${expname}_$RANDOM
 mkdir -p $TMPDIR || exit -1
 
-#ET HERE fix this!!!
+#ET HERE fix ifs_monthly.sh!!!
 export GRB_EXT=".grb"
+#ET HERE find a way to specify PPTIME when needed, for now it is hard-coded
 export PPTIME=21600 #6h, default
-#export PPTIME=10800 #3h
+#export PPTIME=10800 #3h, e.g. PRIMAVERA
+if [[ "$expname" == "a0ez" ]] ; then export PPTIME=10800 ; fi
 
 echo Script is running in $PROGDIR
 echo Temporary files are in $TMPDIR

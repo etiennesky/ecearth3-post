@@ -39,9 +39,7 @@ mkdir -p $OUTDIR || exit -1
 out=$OUTDIR/${expname}_${year}
 
 #untar MMA* file
-# TODO get proper filename
 #cd $OUTDIR
-#tar xvf $IFSRESULTS/MMA_${expname}_????????_fc*_${year}????-${year}????.tar
 for f in $IFSRESULTS/MMA_${expname}_????????_fc*_${year}????-${year}????.tar ; do tar xvf $f ; done
 for f in MMA_${expname}_??_${year}??.nc.gz ; do gunzip $f ; done
 
@@ -114,14 +112,8 @@ $cdozip -r -R splitvar \
    icmgg_${year}.nc ${out}_
 
 
-#  post-processing timestep in seconds
-#pptime=$($cdo showtime -seltimestep,1,2 $IFSRESULTS/ICMGG${expname}+${year}01${GRB_EXT} | \
-#   tr -s ' ' ':' | awk -F: '{print ($5-$2)*3600+($6-$3)*60+($7-$4)}' )
-#if [ $pptime -le 0 ]
-#then
-#   pptime=21600 # default 6-hr output timestep
-#fi
-#ET HERE fix this!!!
+# post-processing timestep in seconds
+# pptime cannot be determined from the MMA files and must be set manually
 pptime=$PPTIME
 
 # precip and evap and runoff in kg m-2 s-1

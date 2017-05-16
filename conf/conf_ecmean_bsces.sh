@@ -50,10 +50,9 @@ remap="remapcon2"
 #T255 masks (or theoretically different resolution) are used by ./global_mean.sh 
 #and by ./post2x2.sh scripts. They are computed from the original initial conditions of IFS (using var 172)
 #maskfile=/lus/snx11062/scratch/ms/it/${USER}/ecearth3/setup/ifs/T255L91/19900101/ICMGGECE3INIT
-# ET HERE add test for resolution
-#maskfile=/esnas/scratch/etourign/ecearth3-post/data/ifs/T511L91/19900101/ICMGGECE3INIT
-#maskfile=/esnas/scratch/etourign/ecearth3-post/data/ifs/T255L91/19900101/ICMGGECE3INIT
-maskfile=/esnas/autosubmit/con_files/ecearth3-post/ifs/T255L91/19900101/ICMGGECE3INIT
+#now actual maskfile to use is guessed in EC-mean.sh
+maskfile_t255=/esnas/autosubmit/con_files/ecearth3-post/ifs/T255L91/19900101/ICMGGECE3INIT
+maskfile_t511=/esnas/autosubmit/con_files/ecearth3-post/ifs/T511L91/19900101/ICMGGECE3INIT
 
 # ET HERE add this flag elsewhere
 # ET HERE fix nemo hiresclim first!
