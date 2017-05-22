@@ -48,9 +48,9 @@ export DIR_TIME_SERIES="${EMOP_CLIM_DIR}/timeseries"
 
 # About web page, on remote server host:
 #     =>  set RHOST="" to disable this function...
-#export RHOST="misu228.misu.su.se"
-#export RUSER0="laurent"
-#export WWW_DIR_ROOT="/data/www/ecev3"
+export RHOST=bscct01.bsc.es
+export RUSER=${USER}
+export WWW_DIR_ROOT=/bsc/www/htdocs/public/${USER}
 
 
 ############################

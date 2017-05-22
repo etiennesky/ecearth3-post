@@ -1,0 +1,3 @@
+- save AMWG diags in /esarchive
+- copy .htaccess files to list amwg and timeseries directories
+- move AMWG and timeseries transfer code to main scripts near (if $do_trans)

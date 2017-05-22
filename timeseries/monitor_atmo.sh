@@ -121,7 +121,7 @@ if [ "${RUN}" = "" ]; then
 fi
 
 
-RWWWD=${WWW_DIR_ROOT}/time_series/${RUN}
+RWWWD=${WWW_DIR_ROOT}/timeseries/${RUN}
 
 
 echo; echo " Runs to be treated: ${RUN}"; echo
@@ -456,7 +456,7 @@ if [ ${IPREPHTML} -eq 1 ]; then
         ssh ${RUSER}@${RHOST} "mkdir -p ${RWWWD}"
         echo "scp atmosphere.tar ${RUSER}@${RHOST}:${RWWWD}/"
         scp atmosphere.tar ${RUSER}@${RHOST}:${RWWWD}/
-        ssh ${RUSER}@${RHOST} "cd ${RWWWD}/; rm -rf atmosphere; tar xf atmosphere.tar 2>/dev/null; rm atmosphere.tar"
+        ssh ${RUSER}@${RHOST} "cd ${RWWWD}/; rm -rf atmosphere; tar xf atmosphere.tar 2>/dev/null; chmod go+rx atmosphere ; chmod go+r atmosphere/* ; rm atmosphere.tar"
         echo; echo
         echo "Diagnostic page installed on remote host ${RHOST} in ${RWWWD}/atmosphere!"
         echo "( Also browsable on local host in ${DIAG_D}/ )"
