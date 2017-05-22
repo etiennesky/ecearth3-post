@@ -50,7 +50,8 @@ do
    do
       ym=$(printf %04d%02d $year $m)
       #gunzip MMA_${expname}_SH_${ym}.nc.gz
-      $cdo -b F64 splitvar -sp2gpl \
+      #$cdo -b F64 splitvar -sp2gpl \
+      $cdo -b F32 splitvar -sp2gpl \
          -setdate,$year-$m-01 -settime,00:00:00 \
          $TMPDIR/MMA_${expname}_SH_${ym}.nc icmsh_${ym}_ &
 
@@ -77,7 +78,8 @@ do
    for m in $(seq $m1 $((m1+NPROCS-1)) )
    do
       ym=$(printf %04d%02d $year $m)
-      $cdo -b F64 setdate,$year-$m-01 -settime,00:00:00 \
+      #$cdo -b F64 setdate,$year-$m-01 -settime,00:00:00 \
+      $cdo -b F32 setdate,$year-$m-01 -settime,00:00:00 \
          $TMPDIR/MMA_${expname}_GG_${ym}.nc icmgg_${ym}.nc &
 
    done

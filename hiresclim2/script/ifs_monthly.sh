@@ -42,7 +42,8 @@ do
    for m in $(seq $m1 $((m1+NPROCS-1)) )
    do
       ym=$(printf %04d%02d $year $m)
-      $cdo -b F64 -t $ecearth_table splitvar -sp2gpl \
+      #$cdo -b F64 -t $ecearth_table splitvar -sp2gpl \
+      $cdo -b F32 -t $ecearth_table splitvar -sp2gpl \
          -setdate,$year-$m-01 -settime,00:00:00 -timmean \
          $IFSRESULTS/ICMSH${expname}+$ym icmsh_${ym}_ &
 
@@ -69,7 +70,8 @@ do
    for m in $(seq $m1 $((m1+NPROCS-1)) )
    do
       ym=$(printf %04d%02d $year $m)
-      $cdo -b F64 setdate,$year-$m-01 -settime,00:00:00 -timmean \
+      #$cdo -b F64 setdate,$year-$m-01 -settime,00:00:00 -timmean \
+      $cdo -b F32 setdate,$year-$m-01 -settime,00:00:00 -timmean \
          $IFSRESULTS/ICMGG${expname}+$ym icmgg_${ym}.grb &
 
    done

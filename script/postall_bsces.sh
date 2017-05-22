@@ -4,7 +4,7 @@
 usage()
 {
    echo "Usage: "`basename $0`" [-u user] [-a account] [-r resolution] exp year1 year2 [user]"
-   echo "Do AMWG analysis of experiment exp in years year1 to year2 for a specific user (optional) and resolution,"
+   echo "Do analysis of experiment exp in years year1 to year2 for a specific user (optional) and resolution,"
    echo "where resolution is N128, N256 etc. (N128=default)"
    echo "Options are:"
    echo "-a account    : specify a different special project for accounting (default: spnltune)"

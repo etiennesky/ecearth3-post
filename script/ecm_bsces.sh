@@ -36,7 +36,6 @@ if [ "$#" -eq 4 ]; then
    USERexp=$4
 fi
 
-#OUT=$SCRATCH/ecearth3-post/tmp
 OUT=/esnas/scratch/$USER/ecearth3-post/tmp
 mkdir -p $OUT
 JOBFILE=$OUT/ecm-${1}.job
@@ -48,7 +47,7 @@ NPROCS=1
 
 echo "Launching EC-mean analysis for experiment $1 of user $USERexp"
 
-sed "s/<EXPID>/$1/" < $SCRIPTDIR/header_bsces.tmpl > $JOBFILE
+sed "s/<EXPID>/$1/" < $SCRIPTDIR/header_$MACHINE.tmpl > $JOBFILE
 sed -i "s/<ACCOUNT>/$account/" $JOBFILE
 sed -i "s/<USERme>/$USERme/" $JOBFILE
 sed -i "s/<JOBID>/ecm/" $JOBFILE
@@ -69,6 +68,4 @@ echo "logs will be in $LOG/ecm_${1}_"`echo $ret | awk '{print $4}'`".{err,out}"
 
 echo "current queue for your user:"
 squeue -u $USER
-
-
 

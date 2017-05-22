@@ -17,7 +17,8 @@ export NEMO_NPROCS=3
 # choose one of amdahl, moore, gustafson for the entire post-processing suite
 # since some temporary files are stored on the local scratch folder
 #JOBHOST=""
-JOBHOST=gustafson
+#JOBHOST=gustafson
+JOBHOST=moore
 
 #local scratch folder, please make sure this doesn't conflict with your setup
 export SCRATCH=/scratch/`id -gn`/${USER}

@@ -34,9 +34,6 @@ while getopts "h?u:a:r:" opt; do
 done
 shift $((OPTIND-1))
 
-OUT=$SCRATCH/tmp
-mkdir -p $OUT
-
 if [ "$#" -lt 3 ]; then
    usage
    exit 0
@@ -46,12 +43,37 @@ if [ "$#" -ge 4 ]; then
    USERexp=$4
 fi
 
-sed "s/<EXPID>/$1/" < $SCRIPTDIR/header_$MACHINE.tmpl > $OUT/amwg.job
-sed -i "s/<USERme>/$USERme/" $OUT/amwg.job
-sed -i "s/<ACCOUNT>/$account/" $OUT/amwg.job
-sed -i "s/<JOBID>/amwg/" $OUT/amwg.job
+OUT=/esnas/scratch/$USER/ecearth3-post/tmp
+mkdir -p $OUT
+JOBFILE=$OUT/amwg-${1}.job
 
-echo ./amwg_modobs.sh $1 $2 $3 $USERexp $res >> $OUT/amwg.job
+LOG=/esnas/scratch/$USER/ecearth3-post/log
+mkdir -p $LOG
 
-qsub $OUT/amwg.job
-qstat -u $USERme
+NPROCS=1
+
+echo "Launching AMWG analysis for experiment $1 of user $USERexp"
+
+sed "s/<EXPID>/$1/" < $SCRIPTDIR/header_$MACHINE.tmpl > $JOBFILE
+sed -i "s/<USERme>/$USERme/" $JOBFILE
+sed -i "s/<ACCOUNT>/$account/" $JOBFILE
+sed -i "s/<JOBID>/amwg/" $JOBFILE
+sed -i "s/<JOBHOST>/$JOBHOST/" $JOBFILE
+sed -i "s/<NPROCS>/$NPROCS/" $JOBFILE
+sed -i 's#<LOG>#'$LOG'#' $JOBFILE
+
+echo ../amwg/amwg_modobs.sh $1 $2 $3 $USERexp $res >> $JOBFILE
+
+cat $JOBFILE
+
+[ "$JOBHOST" == "" ] && nodelist="" || nodelist="-w $JOBHOST"
+ret=`sbatch $nodelist $JOBFILE`
+
+echo "sbatch return code: $?"
+echo "sbatch return: $ret"
+echo "logs will be in $LOG/amwg_${1}_"`echo $ret | awk '{print $4}'`".{err,out}"
+
+sleep 2
+echo "current queue for your user:"
+squeue -u $USER
+

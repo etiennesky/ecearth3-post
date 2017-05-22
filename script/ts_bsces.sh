@@ -36,7 +36,6 @@ if [ "$#" -eq 2 ]; then
    USERexp=$2
 fi
 
-#OUT=$SCRATCH/tmp
 OUT=/esnas/scratch/$USER/ecearth3-post/tmp
 mkdir -p $OUT
 JOBFILE=$OUT/ts-${1}.job
@@ -44,14 +43,17 @@ JOBFILE=$OUT/ts-${1}.job
 LOG=/esnas/scratch/$USER/ecearth3-post/log
 mkdir -p $LOG
 
+NPROCS=1
+
 echo "Launching timeseries analysis for experiment $1 of user $USERexp"
 
 #sed -i "s/<USERexp>/$USERexp/" $OUT/header.job
 sed "s/<EXPID>/$1/" < $SCRIPTDIR/header_$MACHINE.tmpl > $JOBFILE
-sed -i "s/<ACCOUNT>/$ACCOUNT/" $JOBFILE
+sed -i "s/<ACCOUNT>/$account/" $JOBFILE
 sed -i "s/<USERme>/$USERme/" $JOBFILE
 sed -i "s/<JOBID>/ts/" $JOBFILE
 sed -i "s/<JOBHOST>/$JOBHOST/" $JOBFILE
+sed -i "s/<NPROCS>/$NPROCS/" $JOBFILE
 sed -i 's#<LOG>#'$LOG'#' $JOBFILE
 
 echo ../timeseries/timeseries.sh $1 $USERexp >> $JOBFILE

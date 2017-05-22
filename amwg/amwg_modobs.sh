@@ -3,7 +3,7 @@
 #set -xuve
 
 if [ "$#" -lt 3 ]; then
-   echo "Usage: amwg_modobs.sh exp year1 year2 [user] [resolution]"
+   echo "Usage: "`basename $0`" exp year1 year2 [user] [resolution]"
    echo "Do AMWG analysis of experiment exp in years year1 to year2 for a specific user (optional) and resolution,"
    echo "where resolution is N128, N256 etc. (N128=default)"
    exit
@@ -29,8 +29,11 @@ year2=$3
 conf=$MACHINE
 PROGDIR=$EMOP_DIR
 
-#cd $PROGDIR/ncarize
-#bash $PROGDIR/ncarize/ncarize_pd.sh -C $conf -R $expname -g $resolution -i ${year1} -e ${year2}
+#first step is to ncarize the files created by hiresclim2
+#the MMA files lack sp/PS/surface pressure and stl1/TS/surface temperature
+cd $PROGDIR/ncarize
+bash $PROGDIR/ncarize/ncarize_pd.sh -C $conf -R $expname -g $resolution -i ${year1} -e ${year2}
+#second step is to run the AMWG diags
 cd $PROGDIR/amwg_diag
 bash $PROGDIR/amwg_diag/diag_mod_vs_obs.sh -C $conf -R $expname -P ${year1}-${year2}
 
@@ -43,3 +46,4 @@ ectrans -remote sansone -source diag_${expname}.tar -verbose -overwrite
 ectrans -remote sansone -source ~/EXPERIMENTS.$MACHINE.$USERme.dat -verbose -overwrite
 fi
 
+echo "done ""`basename $0`"

@@ -29,7 +29,7 @@ export POST_DIR="/esarchive/exp/ecearth/<RUN>/ecearth3-post/post/"
 #export EMOP_CLIM_DIR="/esnas/scratch/etourign/ecearth3-post/amwg"
 #TODO do all temporary stuff in ncarize_pd.sh in $TMPDIR_ROOT and the ncopy results to /esnas
 export EMOP_CLIM_DIR="$SCRATCH/ecearth3-post/amwg"
-#export EMOP_CLIM_DIR="/esarchive/exp/ecearth/<RUN>/ecearth3-post/diag"
+#export EMOP_CLIM_DIR="/esarchive/exp/ecearth/<RUN>/ecearth3-post/amwg"
 
 
 # *** DIR_EXTRA:
@@ -121,7 +121,8 @@ export LIST_V_2D_ATM="msl uas vas tas e sp \
 #export LIST_V_3D_ATM="q r t u v z"
 
 # Those we have:
-export LIST_V_3D_ATM="q t u v z"
+#export LIST_V_3D_ATM="q t u v z"
+export LIST_V_3D_ATM="q r t u v z"
 #export LIST_V_3D_ATM=""
 
 # ET HERE add this flag elsewhere

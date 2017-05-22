@@ -7,7 +7,7 @@ ecearth3-post consists of several independent tools:
 - hiresclim2 which creates monthly average files from IFS raw grib files or MMA files
 - ECmean which is used to compute several values such as energy budget and temperature, averaged over the globe and a given timeseries
 - timeseries which prepares BaraKuda-style timeseries plots of some atmospheric variables
-- AMWG, still unsupported
+- AMWG which produces 2D and 3D plots of climatological averages of atmospheric variables and compares them to observation and reanalyses
 
 For more details please read the docs in doc/EC-Earth_postprocessing_scripts.pdf which apply to running the suite on CCA.
 
