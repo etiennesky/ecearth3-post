@@ -10,7 +10,7 @@ usage()
    echo "-u user       : analyse experiment of a different user (default: yourself)"
 }
 
-. $HOME/ecearth3/post/conf/conf_users.sh
+. ../conf/conf_users.sh
 
 #set -uxe
 
@@ -61,6 +61,7 @@ sed -i "s/<USERexp>/$USERexp/" $JOBFILE
 sed -i "s/<JOBHOST>/$JOBHOST/" $JOBFILE
 sed -i "s/<NPROCS>/$NPROCS/" $JOBFILE
 sed -i 's#<LOG>#'$LOG'#' $JOBFILE
+sed -i 's#<ECE3POST_ROOT>#'${ECE3POST_ROOT}'#' $JOBFILE
 
 cat $JOBFILE
 

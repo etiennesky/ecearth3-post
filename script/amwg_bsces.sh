@@ -11,7 +11,8 @@ usage()
    echo "-u resolution : resolution (default: N128)"
 }
 
-. $HOME/ecearth3/post/conf/conf_users.sh
+. ../conf/conf_users.sh
+
 
 #account=spnltune
 account=none
@@ -61,6 +62,7 @@ sed -i "s/<JOBID>/amwg/" $JOBFILE
 sed -i "s/<JOBHOST>/$JOBHOST/" $JOBFILE
 sed -i "s/<NPROCS>/$NPROCS/" $JOBFILE
 sed -i 's#<LOG>#'$LOG'#' $JOBFILE
+sed -i 's#<ECE3POST_ROOT>#'${ECE3POST_ROOT}'#' $JOBFILE
 
 echo ../amwg/amwg_modobs.sh $1 $2 $3 $USERexp $res >> $JOBFILE
 

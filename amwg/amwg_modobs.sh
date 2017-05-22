@@ -23,7 +23,7 @@ year1=$2
 year2=$3
 
 #Configuration file
-. $HOME/ecearth3/post/conf/conf_users.sh
+. ../conf/conf_users.sh
 . $CONFDIR/conf_amwg_$MACHINE.sh
 
 conf=$MACHINE
@@ -46,4 +46,5 @@ ectrans -remote sansone -source diag_${expname}.tar -verbose -overwrite
 ectrans -remote sansone -source ~/EXPERIMENTS.$MACHINE.$USERme.dat -verbose -overwrite
 fi
 
+echo
 echo "done ""`basename $0`"

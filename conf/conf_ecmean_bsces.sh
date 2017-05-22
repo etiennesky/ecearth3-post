@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. $HOME/ecearth3/post/conf/conf_users.sh
-
 #CONFIG FILE FOR PI/global mean scripts
 #Paolo Davini (ISAC-CNR) - <p.davini@isac.cnr.it> 
 #December 2014
@@ -10,7 +8,7 @@
 module load CDO
 
 #Where the program is placed
-PIDIR=/home/Earth/${USER0}/ecearth3/post/ECmean
+PIDIR=${ECE3POST_ROOT}/ECmean
 
 #Base directory where the postprocessing outputs are located
 #This will be evaluated later, use ${year} and ${exp} 

@@ -1,13 +1,11 @@
 #!/bin/bash
 
-. $HOME/ecearth3/post/conf/conf_users.sh
-
 # load required modules
 module load NCO netCDF Python CDO NCL #CDFTOOLS matplotlib
 #module load NCL/6.2.1-foss-2015a
 
 # Where to find EMoP:
-export EMOP_DIR="/home/Earth/$USER0/ecearth3/post/amwg"
+export EMOP_DIR=${ECE3POST_ROOT}/amwg
 
 # Name of current conf (same as this file name conf_<EMOP_CONF>.csh):
 export EMOP_CONF="bsces"

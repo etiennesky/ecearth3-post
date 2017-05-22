@@ -10,7 +10,7 @@ set -xuve
 
 exp=$1
 
-. $HOME/ecearth3/post/conf/conf_users.sh
+. ../conf/conf_users.sh
 . $CONFDIR/conf_timeseries_$MACHINE.sh
 
 if [ "$#" -eq 2 ]; then

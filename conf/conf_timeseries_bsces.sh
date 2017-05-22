@@ -1,13 +1,11 @@
 #!/bin/bash
 
-. $HOME/ecearth3/post/conf/conf_users.sh
-
 # load required modules
 module load NCO netCDF Python CDO CDFTOOLS matplotlib
 module list
 
 # Where to find EMoP:
-export EMOP_DIR="/home/Earth/${USER0}/ecearth3/post/timeseries"
+export EMOP_DIR=${ECE3POST_ROOT}/timeseries
 
 # Name of current conf (same as this file name conf_<EMOP_CONF>.csh):
 export EMOP_CONF="bsces"

@@ -25,7 +25,7 @@ expname=$1
 YEAR1=$2
 YEAR2=$3
 
-. $HOME/ecearth3/post/conf/conf_users.sh
+. ../conf/conf_users.sh
 . $CONFDIR/conf_hiresclim_$MACHINE.sh
 
 if [ $# -eq 4 ]; then

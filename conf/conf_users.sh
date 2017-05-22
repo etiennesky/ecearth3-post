@@ -6,8 +6,11 @@ fi
 
 ########################
 export MACHINE=bsces  # Name of this machine to choose conf files
-export CONFDIR=/home/Earth/$USER0/ecearth3/post/conf # Where all config files are
-export SCRIPTDIR=/home/Earth/$USER0/ecearth3/post/script # Where all scripts files are
+#export CONFDIR=/home/Earth/$USER0/ecearth3/post/conf # Where all config files are
+#export SCRIPTDIR=/home/Earth/$USER0/ecearth3/post/script # Where all scripts files are
+export ECE3POST_ROOT=`readlink -f $(dirname $BASH_SOURCE)"/.."`
+export CONFDIR=${ECE3POST_ROOT}/conf # Where all config files are
+export SCRIPTDIR=${ECE3POST_ROOT}/script # Where all scripts files are
 
 #ET HERE set this somewhere when running the scripts standalone
 export IFS_NPROCS=3

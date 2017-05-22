@@ -20,7 +20,7 @@ module load netcdf nco cdo python ncl
 ## Configuration file
 ##########################
 
-. $HOME/ecearth3/post/conf/conf_users.sh
+. ../conf/conf_users.sh
 . $CONFDIR/conf_amwg_$MACHINE.sh
 
 expname1=taj1

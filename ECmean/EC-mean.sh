@@ -25,7 +25,7 @@ year1=$2
 year2=$3
 
 #Configuration
-. $HOME/ecearth3/post/conf/conf_users.sh
+. ../conf/conf_users.sh
 . $CONFDIR/conf_ecmean_$MACHINE.sh
 
 if [ "$#" -eq 4 ]; then

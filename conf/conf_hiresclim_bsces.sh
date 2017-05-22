@@ -13,7 +13,7 @@ module load NCO netCDF Python CDO CDFTOOLS
 
 #program folder
 if [ -z "${PROGDIR-}" ] ; then
-PROGDIR=/home/Earth/$USER0/ecearth3/post/hiresclim2
+PROGDIR=${ECE3POST_ROOT}/hiresclim2
 fi
 
 # required programs, including compression options
