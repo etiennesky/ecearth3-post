@@ -1,3 +1,4 @@
 - save AMWG diags in /esarchive
+- parallelize amwg ncarize script by months as in hiresclim2
 - copy .htaccess files to list amwg and timeseries directories
 - move AMWG and timeseries transfer code to main scripts near (if $do_trans)

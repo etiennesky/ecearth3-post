@@ -81,7 +81,7 @@ rm -f icmgg_${year}.grb
 $cdo cat icmgg_${year}??.grb icmgg_${year}.grb
 
 $cdozip -r -R -t $ecearth_table splitvar \
-   -selvar,uas,vas,tas,ci,sstk,sd,tds,tcc,lcc,mcc,hcc,tclw,tciw,tcwv,msl,q,fal,uas,vas \
+   -selvar,uas,vas,tas,ci,sstk,sd,tds,tcc,lcc,mcc,hcc,tclw,tciw,tcwv,msl,q,fal,stl1 \
    icmgg_${year}.grb ${out}_
 
 

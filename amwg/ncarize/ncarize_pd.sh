@@ -205,7 +205,7 @@ for var in ${LIST_V_3D_ATM}; do
 
         echo; echo " Treating ${var} => ${varncar} !!!"
 
-
+#TMP ET this loop is embarassingly parallel, make sure tmp.nc is renamed to unique filename like tmp${jy}.nc
         jy=${YEAR1}
         while [ ${jy} -le ${YEAR2} ]; do
 

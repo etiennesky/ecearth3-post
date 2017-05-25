@@ -91,6 +91,7 @@ $cdo cat icmgg_${year}??.nc icmgg_${year}.nc
 
 #rename vars: build a list of rename pairs and call ncrename once
 rename_str=""
+# these vars must be renamed
 vars1=(U10M V10M T2M D2M var78 var79)
 vars2=(uas vas tas tds tclw tciw)
 for (( i = 0 ; i < ${#vars1[@]} ; i++ )) 
@@ -98,7 +99,8 @@ do
 #   ncrename -v $v1,$v2 icmgg_${year}.nc
    rename_str="${rename_str} -v ${vars1[$i]},${vars2[$i]}"
 done
-vars2="ci sstk sd tcc lcc mcc hcc tcwv msl q fal ro sf lsp cp e ssr str sshf ssrd strd slhf tsr ttr ewss nsss ssrc strc tsrc ttrc"
+#these vars must be converted to lower case
+vars2="ci sstk sd tcc lcc mcc hcc tcwv msl q fal ro sf lsp cp e ssr str sshf ssrd strd slhf tsr ttr ewss nsss ssrc strc tsrc ttrc stl1"
 for v2 in $vars2
 do
    v1="${v2^^}"
@@ -110,7 +112,7 @@ ncrename $rename_str icmgg_${year}.nc
 
 # extract variables which do not require any calculations
 $cdozip -r -R splitvar \
-   -selvar,uas,vas,tas,ci,sstk,sd,tds,tcc,lcc,mcc,hcc,tclw,tciw,tcwv,msl,q,fal \
+   -selvar,uas,vas,tas,ci,sstk,sd,tds,tcc,lcc,mcc,hcc,tclw,tciw,tcwv,msl,q,fal,stl1 \
    icmgg_${year}.nc ${out}_
 
 

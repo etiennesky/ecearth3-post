@@ -76,7 +76,7 @@ echo ../ECmean/EC-mean.sh $1 $2 $3 $USERexp >>  $JOBFILE
 echo echo Running timeseries >>  $JOBFILE
 echo ../timeseries/timeseries.sh $1 $USERexp >> $JOBFILE
 echo echo Running AMWG >>  $JOBFILE
-echo ./amwg_modobs.sh $1 $2 $3 $USERexp $res >> $JOBFILE
+echo ../amwg/amwg_modobs.sh $1 $2 $3 $USERexp $res >> $JOBFILE
 echo echo postall done!!! >>  $JOBFILE
 
 cat $JOBFILE

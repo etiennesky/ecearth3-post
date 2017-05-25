@@ -45,3 +45,4 @@
 31	    ci		Sea-Ice Cover [0-1]
 134         sp		Surface Pressure [Pa]
 144	    sf		Snowfall [kg m-2 s-1]
+139	    stl1        Soil temperature level 1 [K]

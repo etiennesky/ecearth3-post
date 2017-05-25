@@ -9,7 +9,9 @@
 #######
 
 # Getting list of available confs:
-list_confs=`\ls ../conf_*.bash | sed -e "s|../conf_||g" -e "s|.bash||g"`
+#list_confs=`\ls ../conf_*.bash | sed -e "s|../conf_||g" -e "s|.bash||g"`
+list_confs=`(cd $CONFDIR && \ls conf_amwg_* | sed -e "s|conf_amwg_||g" -e "s|.sh||g")`
+echo "configs: "$list_confs
 
 usage()
 {
@@ -48,7 +50,9 @@ done
 
 if [ "${MY_SETUP}" = "" -o "${LRUN}" = "" -o "${LPERIOD}" = "" ]; then usage ; fi
 
-fconfig="../conf_${MY_SETUP}.bash"
+#fconfig="../conf_${MY_SETUP}.bash"
+fconfig="$CONFDIR/conf_amwg_${MY_SETUP}.sh"
+
 if [ ! -f ${fconfig} ]; then echo " ERROR: no configuration file found: ${fconfig}"; exit; fi
 . ${fconfig}
 

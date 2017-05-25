@@ -37,11 +37,11 @@ bash $PROGDIR/ncarize/ncarize_pd.sh -C $conf -R $expname -g $resolution -i ${yea
 cd $PROGDIR/amwg_diag
 bash $PROGDIR/amwg_diag/diag_mod_vs_obs.sh -C $conf -R $expname -P ${year1}-${year2}
 
+if $do_trans; then
 DIAGS=$EMOP_CLIM_DIR/diag_${expname}_${year1}-${year2}
 cd $DIAGS
 rm -r -f diag_${expname}.tar
 tar cvf diag_${expname}.tar ${expname}-obs_${year1}-${year2}
-if $do_trans; then
 ectrans -remote sansone -source diag_${expname}.tar -verbose -overwrite
 ectrans -remote sansone -source ~/EXPERIMENTS.$MACHINE.$USERme.dat -verbose -overwrite
 fi
